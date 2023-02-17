@@ -2,5 +2,6 @@
 import './style.css';
 import {getWeatherData} from '/modules/weatherData.js'
 
-const weatherObject = await getWeatherData('Camarillo', 'United States of America', 'California');
-console.log(weatherObject);
+console.log(await getWeatherData('Camarillo', 'United States of America', 'California'));
+
+//switch to 5 day forecast

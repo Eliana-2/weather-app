@@ -30,22 +30,51 @@ async function getLocationCoordinates(cityName, countryCode) {
 async function getLocalForecast(coordinateArray) {
   try {
     const lat = coordinateArray[0], lon = coordinateArray[1];
-    const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=f3fbe20627eff09cace90cdb9fbe9ee1`);
+    const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&cnt=40&units=metric&appid=f3fbe20627eff09cace90cdb9fbe9ee1`);
     const responseData = await response.json();
-    const weather = responseData.weather[0].main,
-    weatherDescription = responseData.weather[0].description,
-    temp = responseData.main.temp,
-    maxTemp = responseData.main.temp_max,
-    minTemp = responseData.main.temp_min;
-    return {
-      'weather': weather,
-      'weatherDescription': weatherDescription,
-      'temp' : temp,
-      'maxTemp': maxTemp,
-      'minTemp': minTemp
-      }
-    } catch (error) {
+    return responseData.list;
+
+  } catch (error) {
     console.log('Error retrieving local forecast');
+  }
+}
+
+async function processLocalForecast(responseList) {
+  try {
+  const DAILY_3_HOUR_INTERVALS = 8;
+  const NUMBER_OF_DAYS = 5;
+  let forecastData = {};
+  forecastData.threeHourCurrentForecast =[];
+  forecastData.fiveDayForecast = [];
+  for(let index = 0; index < DAILY_3_HOUR_INTERVALS; index++) {
+    const weather = responseList[index].weather[0].main,
+          weatherDescription = responseList[index].weather[0].description,
+          temp = responseList[index].main.temp,
+          humidity = responseList[index].main.humidity;
+    forecastData.threeHourCurrentForecast.push({
+      'weather' : weather,
+      'weatherDescription' : weatherDescription,
+      'temp' : temp,
+      'humidity': humidity
+    })
+  }
+  const dayListSize = DAILY_3_HOUR_INTERVALS;
+  for(let index = 0; index < responseList.length; index += dayListSize) {
+    const dayList = responseList.slice(index, index + dayListSize);
+    let maxTemp = responseList[index].main.temp,
+        minTemp = responseList[index].main.temp;
+    for(let dayListIndex = 0; dayListIndex < dayList.length; dayListIndex++) {
+      if(dayList[dayListIndex].main.temp > maxTemp) {maxTemp = dayList[dayListIndex].main.temp};
+      if(dayList[dayListIndex].main.temp < minTemp) {minTemp = dayList[dayListIndex].main.temp};
+    }
+    forecastData.fiveDayForecast.push({
+      'maxTemp' : maxTemp,
+      'minTemp' : minTemp
+    })
+  }
+  return forecastData;
+  } catch(error) {
+    console.log('Error processing local forecast');
   }
 }
 
@@ -54,7 +83,8 @@ async function getWeatherData(cityName, countryName, stateName = '') {
     const countryCode = await getCountryCodes(countryName, stateName);
     const locationCoordinates = await getLocationCoordinates(cityName, countryCode);
     const localForecast = await getLocalForecast(locationCoordinates);
-    return localForecast;
+    const weatherInfo = await processLocalForecast(localForecast);
+    return weatherInfo;
   } catch(error) {
     console.log('Error getting weather data');
   }
