@@ -7,6 +7,10 @@ ul {
   list-style-type: none;
 }
 
+:root {
+  font-size: 16px;
+}
+
 body {
   width: 100vw;
   height: 100vh;
@@ -14,27 +18,32 @@ body {
 }
 
 .location-form {
-  width: 230px;
-  height: 250px;
+  width: 346px;
+  height: 408px;
   position: absolute;
   left: 50%;
-  margin-left: -115px;
+  margin-left: -173px;
   top: 50%;
-  margin-top: -125px;
+  margin-top: -204px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
   border: 1px solid black;
   border-radius: 4px;
+  box-shadow: 3px 3px 3px lightgrey;
+  padding: 48px 32px;
+  background-image: url('public/rain.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .form-element-list {
   display: flex;
   flex-direction: column;
-  padding: 16px;
-  gap: 16px;
+  justify-content: space-between;
+  gap: 45px;
 }
 
 .form-element {
@@ -44,6 +53,26 @@ body {
 }
 
 .form-value {
-  width: 181px;
+  width: 240px;
+  height: 27px;
   box-sizing: border-box;
+  font-size: 1rem;
+}
+
+.form-label {
+  color: lavenderblush;
+  font-weight: bolder;
+  font-size: 1rem;
+}
+
+.form-button {
+  align-self: center;
+  width: 136px;
+  height: 38px;
+  border-width: 0px;
+  border-radius: 6px;
+  color: lavenderblush;
+  font-weight: bold;
+  background-color: black;
+  font-size: 1.2rem;
 }

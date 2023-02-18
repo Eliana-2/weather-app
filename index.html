@@ -8,23 +8,25 @@
   </head>
   <body>
     <form class="location-form">
-      <h3 class="form-header">Get Weather Data</h2>
       <ul class="form-element-list">
         <li class="form-element">
-          <label for="city_name">City</label>
+          <label class='form-label' for="city_name">City</label>
           <input class='form-value' type="text" id="city_name">
         </li>
         <li class="form-element">
-          <label for="country_name">Country</label>
+          <label class='form-label' for="country_name">Country</label>
           <select class='form-value' name="country_name" id="country-select">
             <option value="">Select Country</option>
           </select>
         </li>
         <li class="form-element">
-          <label for="state_name">State (USA)</label>
+          <label class='form-label' for="state_name">State (USA)</label>
           <select class='form-value' name="state_name" id="state-select">
             <option value="">Select State</option>
           </select>
+        </li>
+        <li class="form-element">
+          <button class="form-button">Get Forecast</button>
         </li>
       </ul>
     </form>
