@@ -34,7 +34,7 @@ body {
   border-radius: 4px;
   box-shadow: 3px 3px 3px lightgrey;
   padding: 48px 32px;
-  background-image: url('public/rain.jpg');
+  background-image: url('/images/rain.jpg');
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -43,7 +43,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 45px;
+  gap: 26px;
 }
 
 .form-element {
@@ -59,10 +59,22 @@ body {
   font-size: 1rem;
 }
 
+
 .form-label {
   color: lavenderblush;
   font-weight: bolder;
   font-size: 1rem;
+}
+
+.form-value-error {
+  border-color:crimson;
+  border-width: 2px;
+}
+
+.form-error {
+  height: 16px;
+  font-size: 0.9rem;
+  color: crimson;
 }
 
 .form-button {

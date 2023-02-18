@@ -1,13 +1,13 @@
 async function getCountryCodes(countryName, stateName = '') {
   try {
     if(countryName === 'United States of America') {
-      const response = await fetch('state_codes.json');
+      const response = await fetch('data/state_codes.json');
       const responseData = await response.json();
       const stateData = await responseData.find(state => state.country === 'US' && state.name === stateName);
       return stateData.code;
     }
     else {
-      const response = await fetch('country_codes.json');
+      const response = await fetch('data/country_codes.json');
       const responseData = await response.json();
       const countryData = await responseData.find(country => country.name === countryName);
       return countryData.alpha2;

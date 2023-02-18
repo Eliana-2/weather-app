@@ -7,23 +7,26 @@
     <script type="module" src="/main.js" defer></script>
   </head>
   <body>
-    <form class="location-form">
+    <form name='location-form' class="location-form" novalidate>
       <ul class="form-element-list">
         <li class="form-element">
           <label class='form-label' for="city_name">City</label>
-          <input class='form-value' type="text" id="city_name">
+          <input class='form-value' type="text" id="city_name" required>
+          <span class="form-error" aria-live="polite"></span>
         </li>
         <li class="form-element">
           <label class='form-label' for="country_name">Country</label>
-          <select class='form-value' name="country_name" id="country-select">
+          <select class='form-value' name="country_name" id="country-select" required>
             <option value="">Select Country</option>
           </select>
+          <span class="form-error" aria-live="polite"></span>
         </li>
         <li class="form-element">
           <label class='form-label' for="state_name">State (USA)</label>
-          <select class='form-value' name="state_name" id="state-select">
+          <select class='form-value' name="state_name" id="state-select" required>
             <option value="">Select State</option>
           </select>
+          <aria class="form-error" aria-live="polite"></aria>
         </li>
         <li class="form-element">
           <button class="form-button">Get Forecast</button>
