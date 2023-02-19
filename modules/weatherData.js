@@ -46,26 +46,25 @@ async function processLocalForecast(responseList) {
   let forecastData = {};
   forecastData.threeHourCurrentForecast =[];
   forecastData.fiveDayForecast = [];
-  for(let index = 0; index < DAILY_3_HOUR_INTERVALS; index++) {
-    const weather = responseList[index].weather[0].main,
-          weatherDescription = responseList[index].weather[0].description,
-          temp = responseList[index].main.temp,
-          humidity = responseList[index].main.humidity;
-    forecastData.threeHourCurrentForecast.push({
-      'weather' : weather,
-      'weatherDescription' : weatherDescription,
-      'temp' : temp,
-      'humidity': humidity
-    })
-  }
   const dayListSize = DAILY_3_HOUR_INTERVALS;
   for(let index = 0; index < responseList.length; index += dayListSize) {
+    forecastData.threeHourCurrentForecast[index / dayListSize] = [];
     const dayList = responseList.slice(index, index + dayListSize);
-    let maxTemp = responseList[index].main.temp,
-        minTemp = responseList[index].main.temp;
+    let maxTemp = responseList[index].main.temp_max,
+        minTemp = responseList[index].main.temp_min;
     for(let dayListIndex = 0; dayListIndex < dayList.length; dayListIndex++) {
-      if(dayList[dayListIndex].main.temp > maxTemp) {maxTemp = dayList[dayListIndex].main.temp};
-      if(dayList[dayListIndex].main.temp < minTemp) {minTemp = dayList[dayListIndex].main.temp};
+      const weather = responseList[index].weather[0].main,
+      weatherDescription = responseList[index].weather[0].description,
+      temp = responseList[index].main.temp,
+      humidity = responseList[index].main.humidity;
+      forecastData.threeHourCurrentForecast[index / dayListSize].push({
+        'weather' : weather,
+        'weatherDescription' : weatherDescription,
+        'temp' : temp,
+        'humidity': humidity
+      })
+      if(dayList[dayListIndex].main.temp_max > maxTemp) {maxTemp = dayList[dayListIndex].main.temp};
+      if(dayList[dayListIndex].main.temp_min < minTemp) {minTemp = dayList[dayListIndex].main.temp};
     }
     forecastData.fiveDayForecast.push({
       'maxTemp' : maxTemp,
