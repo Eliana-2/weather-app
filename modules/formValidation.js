@@ -22,10 +22,11 @@ function validateInput(input) {
 }
 
 function isValid(inputs) {
+  let valid = true;
   inputs.forEach((input) => {
-    if(!validateInput(input)) {return false}
+    if(!validateInput(input)) {valid = false}
   });
-  return true;
+  return valid;
 }
 
 export {validateInput, isValid};
