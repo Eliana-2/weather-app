@@ -20,23 +20,4 @@ async function populateSelect(selectType) {
 }
 }
 
-function showError(input, message) {
-  const inputErrorMessage = input.nextElementSibling;
-  inputErrorMessage.textContent = message;
-  input.classList.add('form-value-error');
-}
-
-function clearError(input) {
-  const inputErrorMessage = input.nextElementSibling;
-  inputErrorMessage.textContent = '';
-  input.classList.remove('form-value-error');
-}
-
-function validateInput(input) {
-  clearError(input);
-  console.log(document.getElementById('country-select'))
-  if(input.id === 'state-select' && document.getElementById('country-select').value !== 'United States of America') {return;}
-  if(input.validity.valueMissing) {showError(input, 'Required Field');}
-}
-
-export {populateSelect, validateInput};
+export {populateSelect};
