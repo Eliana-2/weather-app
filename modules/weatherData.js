@@ -41,34 +41,43 @@ async function getLocalForecast(coordinateArray) {
 
 async function processLocalForecast(responseList) {
   try {
+  console.log(responseList)
+  const INTERVAL_HOURS = 3;
   const DAILY_3_HOUR_INTERVALS = 8;
-  const NUMBER_OF_DAYS = 5;
+  const FORECAST_NUMBER_OF_DAYS = 4;
+  const currentDate = new Date(responseList[0].dt * 1000);
+  const CURRENT_DAY_INTERVALS = Math.floor((24 - currentDate.getHours()) / INTERVAL_HOURS) + 1;
   let forecastData = {};
-  forecastData.threeHourCurrentForecast =[];
-  forecastData.fiveDayForecast = [];
-  const dayListSize = DAILY_3_HOUR_INTERVALS;
-  for(let index = 0; index < responseList.length; index += dayListSize) {
-    forecastData.threeHourCurrentForecast[index / dayListSize] = [];
-    const dayList = responseList.slice(index, index + dayListSize);
-    let maxTemp = responseList[index].main.temp_max,
-        minTemp = responseList[index].main.temp_min;
+  forecastData.currentWeather =[];
+  forecastData.forecast = [];
+
+  for(let index = CURRENT_DAY_INTERVALS; index < responseList.length - (DAILY_3_HOUR_INTERVALS - CURRENT_DAY_INTERVALS); index += DAILY_3_HOUR_INTERVALS) {
+    const dayList = responseList.slice(index, index + DAILY_3_HOUR_INTERVALS);
+    const dayWeatherList = [];
+    let dayMaxTemp = responseList[index].main.temp_max,
+        dayMinTemp = responseList[index].main.temp_min;
+
     for(let dayListIndex = 0; dayListIndex < dayList.length; dayListIndex++) {
-      const weather = responseList[index].weather[0].main,
-      weatherDescription = responseList[index].weather[0].description,
-      temp = responseList[index].main.temp,
-      humidity = responseList[index].main.humidity;
-      forecastData.threeHourCurrentForecast[index / dayListSize].push({
-        'weather' : weather,
-        'weatherDescription' : weatherDescription,
-        'temp' : temp,
-        'humidity': humidity
-      })
-      if(dayList[dayListIndex].main.temp_max > maxTemp) {maxTemp = dayList[dayListIndex].main.temp};
-      if(dayList[dayListIndex].main.temp_min < minTemp) {minTemp = dayList[dayListIndex].main.temp};
+      if(dayWeatherList.find(weatherType => weatherType.weather === dayList[dayListIndex].weather[0].main) !== undefined) {
+        dayWeatherList.find(weatherType => weatherType.weather === dayList[dayListIndex].weather[0].main).frequency += 1;
+      }
+      else {
+        dayWeatherList.push({
+          'weather' : dayList[dayListIndex].weather[0].main,
+          'frequency' : 1
+        });
+      }
+      if(dayList[dayListIndex].main.temp_max > dayMaxTemp) {dayMaxTemp = dayList[dayListIndex].main.temp_max};
+      if(dayList[dayListIndex].main.temp_min < dayMinTemp) {dayMinTemp = dayList[dayListIndex].main.temp_min};
     }
-    forecastData.fiveDayForecast.push({
-      'maxTemp' : maxTemp,
-      'minTemp' : minTemp
+
+    const weatherMode = Math.max.apply(null, dayWeatherList.map(element => element.frequency));
+    const weather = dayWeatherList.find(element => element.frequency === weatherMode).weather;
+
+    forecastData.forecast.push({
+      'maxTemp' : dayMaxTemp,
+      'minTemp' : dayMinTemp,
+      'weather' : weather
     })
   }
   return forecastData;
