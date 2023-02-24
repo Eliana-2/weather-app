@@ -44,11 +44,14 @@ async function processLocalForecast(responseList) {
   console.log(responseList)
   const INTERVAL_HOURS = 3;
   const DAILY_3_HOUR_INTERVALS = 8;
-  const FORECAST_NUMBER_OF_DAYS = 4;
   const currentDate = new Date(responseList[0].dt * 1000);
   const CURRENT_DAY_INTERVALS = Math.floor((24 - currentDate.getHours()) / INTERVAL_HOURS) + 1;
   let forecastData = {};
-  forecastData.currentWeather =[];
+  forecastData.currentWeather = {
+    'weather' : responseList[0].weather[0].main,
+    'temp' : responseList[0].main.temp,
+    'date' : currentDate.toDateString()
+  };
   forecastData.forecast = [];
 
   for(let index = CURRENT_DAY_INTERVALS; index < responseList.length - (DAILY_3_HOUR_INTERVALS - CURRENT_DAY_INTERVALS); index += DAILY_3_HOUR_INTERVALS) {
@@ -74,10 +77,13 @@ async function processLocalForecast(responseList) {
     const weatherMode = Math.max.apply(null, dayWeatherList.map(element => element.frequency));
     const weather = dayWeatherList.find(element => element.frequency === weatherMode).weather;
 
+    const date = new Date(dayList[0].dt * 1000).toDateString();
+
     forecastData.forecast.push({
       'maxTemp' : dayMaxTemp,
       'minTemp' : dayMinTemp,
-      'weather' : weather
+      'weather' : weather,
+      'date' : date
     })
   }
   return forecastData;
