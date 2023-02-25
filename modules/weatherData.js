@@ -41,18 +41,19 @@ async function getLocalForecast(coordinateArray) {
 
 async function processLocalForecast(responseList) {
   try {
-  console.log(responseList)
-  const INTERVAL_HOURS = 3;
-  const DAILY_3_HOUR_INTERVALS = 8;
   const currentDate = new Date(responseList[0].dt * 1000);
-  const CURRENT_DAY_INTERVALS = Math.floor((24 - currentDate.getHours()) / INTERVAL_HOURS) + 1;
   let forecastData = {};
   forecastData.currentWeather = {
     'weather' : responseList[0].weather[0].main,
+    'icon' : responseList[0].weather[0].icon,
     'temp' : responseList[0].main.temp,
     'date' : currentDate.toDateString()
   };
   forecastData.forecast = [];
+
+  const INTERVAL_HOURS = 3;
+  const DAILY_3_HOUR_INTERVALS = 8;
+  const CURRENT_DAY_INTERVALS = Math.floor((24 - currentDate.getHours()) / INTERVAL_HOURS) + 1;
 
   for(let index = CURRENT_DAY_INTERVALS; index < responseList.length - (DAILY_3_HOUR_INTERVALS - CURRENT_DAY_INTERVALS); index += DAILY_3_HOUR_INTERVALS) {
     const dayList = responseList.slice(index, index + DAILY_3_HOUR_INTERVALS);
@@ -67,6 +68,7 @@ async function processLocalForecast(responseList) {
       else {
         dayWeatherList.push({
           'weather' : dayList[dayListIndex].weather[0].main,
+          'icon' : dayList[dayListIndex].weather[0].icon,
           'frequency' : 1
         });
       }
@@ -75,7 +77,9 @@ async function processLocalForecast(responseList) {
     }
 
     const weatherMode = Math.max.apply(null, dayWeatherList.map(element => element.frequency));
-    const weather = dayWeatherList.find(element => element.frequency === weatherMode).weather;
+    const weatherObject = dayWeatherList.find(element => element.frequency === weatherMode);
+    const weather = weatherObject.weather;
+    const icon = weatherObject.icon;
 
     const date = new Date(dayList[0].dt * 1000).toDateString();
 
@@ -83,6 +87,7 @@ async function processLocalForecast(responseList) {
       'maxTemp' : dayMaxTemp,
       'minTemp' : dayMinTemp,
       'weather' : weather,
+      'icon' : icon,
       'date' : date
     })
   }
