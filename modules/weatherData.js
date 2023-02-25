@@ -47,7 +47,7 @@ async function processLocalForecast(responseList) {
     'weather' : responseList[0].weather[0].main,
     'icon' : responseList[0].weather[0].icon,
     'temp' : responseList[0].main.temp,
-    'date' : currentDate.toDateString()
+    'date' : currentDate.toDateString().slice(0, 10)
   };
   forecastData.forecast = [];
 
@@ -81,7 +81,7 @@ async function processLocalForecast(responseList) {
     const weather = weatherObject.weather;
     const icon = weatherObject.icon;
 
-    const date = new Date(dayList[0].dt * 1000).toDateString();
+    const date = new Date(dayList[0].dt * 1000).toDateString().slice(0, 10);
 
     forecastData.forecast.push({
       'maxTemp' : dayMaxTemp,
