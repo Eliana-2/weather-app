@@ -20,4 +20,8 @@ async function populateSelect(selectType) {
 }
 }
 
-export {populateSelect};
+function toggleVisibility() {
+  document.querySelector('form').style.visibility = (document.querySelector('form').style.visibility === 'hidden') ? 'visible' : 'hidden';
+}
+
+export {populateSelect, toggleVisibility};

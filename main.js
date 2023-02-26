@@ -1,14 +1,19 @@
 import './style.css';
 import {getWeatherData} from '/modules/weatherData.js';
-import {populateSelect} from './modules/formDisplay.js';
+import {populateSelect, toggleVisibility} from './modules/formDisplay.js';
 import {validateInput, isValid} from './modules/formValidation.js';
+import {displayWeather} from './modules/displayData.js';
 
 const inputs = document.querySelectorAll('input, select');
 const form = document.querySelector('form');
 
 async function formSubmit(inputs) {
   if(isValid(inputs)) {
-    console.log(await getWeatherData(document.querySelector('#city-name').value, document.querySelector('#country-select').value, document.querySelector('#state-select').value));
+    toggleVisibility();
+    const weatherData = await getWeatherData(document.querySelector('#city-name').value, document.querySelector('#country-select').value, document.querySelector('#state-select').value);
+    console.log(weatherData);
+    displayWeather(weatherData);
+
   }
 }
 

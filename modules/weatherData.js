@@ -27,7 +27,7 @@ async function getLocationCoordinates(cityName, countryCode) {
   }
 }
 
-async function getLocalForecast(coordinateArray) {
+async function getLocalWeather(coordinateArray) {
   try {
     const lat = coordinateArray[0], lon = coordinateArray[1];
     const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&cnt=40&units=metric&appid=f3fbe20627eff09cace90cdb9fbe9ee1`);
@@ -35,21 +35,21 @@ async function getLocalForecast(coordinateArray) {
     return responseData.list;
 
   } catch (error) {
-    console.log('Error retrieving local forecast');
+    console.log('Error retrieving local weather');
   }
 }
 
-async function processLocalForecast(responseList) {
+async function processLocalWeather(responseList) {
   try {
   const currentDate = new Date(responseList[0].dt * 1000);
-  let forecastData = {};
-  forecastData.currentWeather = {
+  let weatherData = {};
+  weatherData.currentWeather = {
     'weather' : responseList[0].weather[0].main,
     'icon' : responseList[0].weather[0].icon,
     'temp' : responseList[0].main.temp,
     'date' : currentDate.toDateString().slice(0, 10)
   };
-  forecastData.forecast = [];
+  weatherData.forecast = [];
 
   const INTERVAL_HOURS = 3;
   const DAILY_3_HOUR_INTERVALS = 8;
@@ -68,7 +68,7 @@ async function processLocalForecast(responseList) {
       else {
         dayWeatherList.push({
           'weather' : dayList[dayListIndex].weather[0].main,
-          'icon' : dayList[dayListIndex].weather[0].icon,
+          'icon' : dayList[dayListIndex].weather[0].icon.replace('n', 'd'),
           'frequency' : 1
         });
       }
@@ -83,7 +83,7 @@ async function processLocalForecast(responseList) {
 
     const date = new Date(dayList[0].dt * 1000).toDateString().slice(0, 10);
 
-    forecastData.forecast.push({
+    weatherData.forecast.push({
       'maxTemp' : dayMaxTemp,
       'minTemp' : dayMinTemp,
       'weather' : weather,
@@ -91,9 +91,9 @@ async function processLocalForecast(responseList) {
       'date' : date
     })
   }
-  return forecastData;
+  return weatherData;
   } catch(error) {
-    console.log('Error processing local forecast');
+    console.log('Error processing local weather');
   }
 }
 
@@ -101,9 +101,9 @@ async function getWeatherData(cityName, countryName, stateName = '') {
   try {
     const countryCode = await getCountryCodes(countryName, stateName);
     const locationCoordinates = await getLocationCoordinates(cityName, countryCode);
-    const localForecast = await getLocalForecast(locationCoordinates);
-    const weatherInfo = await processLocalForecast(localForecast);
-    return weatherInfo;
+    const localWeather = await getLocalWeather(locationCoordinates);
+    const weatherData = await processLocalWeather(localWeather);
+    return weatherData;
   } catch(error) {
     console.log('Error getting weather data');
   }

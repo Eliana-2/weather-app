@@ -17,6 +17,11 @@ body {
   display: flex;
 }
 
+.display-container {
+  display: flex;
+  gap: 16px;
+}
+
 .location-form {
   width: 346px;
   height: 408px;
