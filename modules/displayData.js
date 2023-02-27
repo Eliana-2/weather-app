@@ -1,7 +1,7 @@
 
 
 function createPanel(dayWeatherData) {
-  const displayContainer = document.getElementById('container');
+  const displayContainer = document.getElementById('display-container');
   const panel = document.createElement('div');
   panel.classList.add('weather-panel');
   

@@ -7,32 +7,34 @@
     <script type="module" src="/main.js" defer></script>
   </head>
   <body>
-    <div id='container' class="display-container"></div>
-    <form name='location-form' class="location-form" novalidate>
-      <ul class="form-element-list">
-        <li class="form-element">
-          <label class='form-label' for="city_name">City</label>
-          <input class='form-value' name="city_name" type="text" id="city-name" required>
-          <span class="form-error" aria-live="polite"></span>
-        </li>
-        <li class="form-element">
-          <label class='form-label' for="country_name">Country</label>
-          <select class='form-value' name="country_name" id="country-select" required>
-            <option value="">Select Country</option>
-          </select>
-          <span class="form-error" aria-live="polite"></span>
-        </li>
-        <li class="form-element">
-          <label class='form-label' for="state_name">State (USA)</label>
-          <select class='form-value' name="state_name" id="state-select" required>
-            <option value="">Select State</option>
-          </select>
-          <aria class="form-error" aria-live="polite"></aria>
-        </li>
-        <li class="form-element">
-          <button class="form-button">Get Forecast</button>
-        </li>
-      </ul>
-    </form>
+    <div class="container">
+      <div id='display-container' class="display-container hidden"></div>
+      <form name='location-form' class="location-form" novalidate>
+        <ul class="form-element-list">
+          <li class="form-element">
+            <label class='form-label' for="city_name">City</label>
+            <input class='form-value' name="city_name" type="text" id="city-name" required>
+            <span class="form-error" aria-live="polite"></span>
+          </li>
+          <li class="form-element">
+            <label class='form-label' for="country_name">Country</label>
+            <select class='form-value' name="country_name" id="country-select" required>
+              <option value="">Select Country</option>
+            </select>
+            <span class="form-error" aria-live="polite"></span>
+          </li>
+          <li class="form-element">
+            <label class='form-label' for="state_name">State (USA)</label>
+            <select class='form-value' name="state_name" id="state-select" required>
+              <option value="">Select State</option>
+            </select>
+            <aria class="form-error" aria-live="polite"></aria>
+          </li>
+          <li class="form-element">
+            <button class="form-button">Get Forecast</button>
+          </li>
+        </ul>
+      </form>
+    </div>
   </body>
 </html>

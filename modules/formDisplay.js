@@ -20,8 +20,8 @@ async function populateSelect(selectType) {
 }
 }
 
-function toggleVisibility() {
-  document.querySelector('form').style.visibility = (document.querySelector('form').style.visibility === 'hidden') ? 'visible' : 'hidden';
+function toggleVisibility(element) {
+  element.classList.toggle('hidden');
 }
 
 export {populateSelect, toggleVisibility};

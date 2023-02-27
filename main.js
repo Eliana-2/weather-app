@@ -6,13 +6,15 @@ import {displayWeather} from './modules/displayData.js';
 
 const inputs = document.querySelectorAll('input, select');
 const form = document.querySelector('form');
+const displayContainer = document.getElementById('display-container');
 
 async function formSubmit(inputs) {
   if(isValid(inputs)) {
-    toggleVisibility();
+    toggleVisibility(form);
     const weatherData = await getWeatherData(document.querySelector('#city-name').value, document.querySelector('#country-select').value, document.querySelector('#state-select').value);
     console.log(weatherData);
     displayWeather(weatherData);
+    toggleVisibility(displayContainer);
 
   }
 }

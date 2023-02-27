@@ -12,14 +12,23 @@ ul {
 }
 
 body {
-  width: max(1280px, 100vw);
-  height: max(853px, 100vh);
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+}
+
+.container {
   display: flex;
   justify-content: center;
   align-items: center;
   background-image: url('./images/rain-background.jpg');
   background-repeat: no-repeat;
   background-size: cover;
+  width: 1280px;
+  height: 1000px;
 }
 
 .hidden {
